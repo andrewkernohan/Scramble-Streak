@@ -1,13 +1,546 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>ScrambleStreak – Coming Soon</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ScrambleStreak</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      color: #1a1a1a;
+    }
+
+    .game-container {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      padding: 30px 20px;
+      border-radius: 20px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      max-width: 400px;
+      width: 90%;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .logo-container {
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: center;
+    }
+
+    h1 {
+      font-size: 28px;
+      margin-bottom: 10px;
+      background: linear-gradient(45deg, #1e40af, #3b82f6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .date {
+      font-size: 13px;
+      color: #6b7280;
+      margin-bottom: 16px;
+    }
+
+    .scrambled-word {
+      font-size: 32px;
+      font-weight: bold;
+      letter-spacing: 8px;
+      margin-bottom: 16px;
+      color: #111827;
+      word-wrap: break-word;
+      padding: 15px;
+      background: linear-gradient(45deg, #fef3c7, #fde68a);
+      border-radius: 12px;
+      border: 2px dashed #fbbf24;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.02); }
+    }
+
+    .timer {
+      font-size: 16px;
+      color: #374151;
+      margin-bottom: 20px;
+      padding: 8px 16px;
+      background: #fef3c7;
+      border-radius: 20px;
+      display: inline-block;
+      font-weight: 600;
+    }
+
+    .timer.warning {
+      background: #fee2e2;
+      color: #dc2626;
+      animation: shake 0.5s ease-in-out infinite;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      75% { transform: translateX(5px); }
+    }
+
+    input[type="text"] {
+      padding: 15px;
+      font-size: 18px;
+      width: 100%;
+      border: 2px solid #fbbf24;
+      border-radius: 12px;
+      margin-bottom: 16px;
+      transition: all 0.3s ease;
+      text-align: center;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    input[type="text"]:focus {
+      outline: none;
+      border-color: #fbbf24;
+      box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.1);
+      transform: scale(1.02);
+    }
+
+    button {
+      padding: 16px 24px;
+      width: 100%;
+      background: linear-gradient(45deg, #fbbf24, #f59e0b);
+      border: none;
+      border-radius: 12px;
+      color: #000;
+      font-weight: bold;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+    }
+
+    button:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    button:hover:enabled {
+      background: linear-gradient(45deg, #f59e0b, #d97706);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    }
+
+    .streak {
+      margin-top: 20px;
+      font-weight: bold;
+      font-size: 18px;
+      color: #ef4444;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .streak-number {
+      background: linear-gradient(45deg, #ef4444, #dc2626);
+      color: white;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 20px;
+    }
+
+    #feedback {
+      margin-top: 16px;
+      padding: 12px;
+      border-radius: 12px;
+      font-size: 16px;
+      display: none;
+      font-weight: 600;
+    }
+
+    #feedback.success {
+      background: linear-gradient(45deg, #dcfce7, #bbf7d0);
+      color: #166534;
+      border: 2px solid #22c55e;
+    }
+
+    #feedback.error {
+      background: linear-gradient(45deg, #fee2e2, #fecaca);
+      color: #991b1b;
+      border: 2px solid #ef4444;
+    }
+
+    #feedback.timeout {
+      background: linear-gradient(45deg, #fef3c7, #fde68a);
+      color: #92400e;
+      border: 2px solid #facc15;
+    }
+
+    #countdown-tomorrow {
+      margin-top: 14px;
+      font-size: 14px;
+      color: #374151;
+    }
+
+    #share-btn {
+      display: none;
+      margin-top: 16px;
+      padding: 12px 20px;
+      background: linear-gradient(45deg, #3b82f6, #2563eb);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    #share-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
+    }
+
+    .hint-btn {
+      margin-top: 10px;
+      padding: 8px 16px;
+      background: transparent;
+      border: 2px solid #6b7280;
+      border-radius: 20px;
+      color: #6b7280;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      width: auto;
+    }
+
+    .hint-btn:hover:enabled {
+      background: #6b7280;
+      color: white;
+      transform: translateY(-1px);
+    }
+
+    .hint {
+      margin-top: 10px;
+      padding: 10px;
+      background: #f3f4f6;
+      border-radius: 8px;
+      font-size: 14px;
+      color: #374151;
+      display: none;
+    }
+
+    .difficulty-indicator {
+      margin-bottom: 10px;
+      font-size: 12px;
+      color: #6b7280;
+    }
+
+    .difficulty-stars {
+      color: #fbbf24;
+    }
+
+    @media (max-height: 500px) {
+      body {
+        align-items: flex-start;
+        padding-top: 20px;
+      }
+    }
+
+    .stats-container {
+      margin-top: 20px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      font-size: 12px;
+    }
+
+    .stat-box {
+      background: #f8fafc;
+      padding: 8px;
+      border-radius: 8px;
+      border: 1px solid #e2e8f0;
+    }
+
+    .stat-number {
+      font-size: 16px;
+      font-weight: bold;
+      color: #1e293b;
+    }
+
+    .stat-label {
+      color: #64748b;
+      margin-top: 2px;
+    }
+  </style>
 </head>
-<body style="font-family: Arial, sans-serif; text-align: center; padding: 100px;">
-  <h1>🚀 ScrambleStreak</h1>
-  <p>The daily word scramble game is launching soon.</p>
-  <p>Check back tomorrow!</p>
+<body>
+
+  <div class="game-container">
+    <div class="logo-container">
+      <svg width="260" height="80" viewBox="0 0 260 80" xmlns="http://www.w3.org/2000/svg">
+        <!-- Yellow rounded square container -->
+        <rect x="10" y="15" width="50" height="50" rx="10" ry="10" fill="#fbbf24"/>
+        
+        <!-- Scrambled letters inside yellow box - "SCRAMBLE" scrambled -->
+        <text x="19" y="32" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#1e40af">S</text>
+        <text x="32" y="32" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#1e40af">C</text>
+        <text x="45" y="32" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#1e40af">R</text>
+        
+        <text x="19" y="45" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#1e40af">A</text>
+        <text x="32" y="45" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#1e40af">M</text>
+        <text x="45" y="45" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#1e40af">B</text>
+        
+        <text x="25" y="58" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#1e40af">L</text>
+        <text x="38" y="58" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#1e40af">E</text>
+        
+        <!-- "Scramble" text -->
+        <text x="75" y="42" font-family="Arial, sans-serif" font-size="22" font-weight="bold" fill="#1e40af">Scramble</text>
+        
+        <!-- "Streak" text -->
+        <text x="75" y="62" font-family="Arial, sans-serif" font-size="22" font-weight="bold" fill="#1e40af">Streak</text>
+      </svg>
+    </div>
+    <div class="date">🧠 Daily Puzzle – <span id="today-date"></span></div>
+    <div class="difficulty-indicator">
+      Difficulty: <span class="difficulty-stars" id="difficulty">★★★☆☆</span>
+    </div>
+    <div class="scrambled-word" id="scrambled-word">LOADING</div>
+    <div class="timer" id="timer-container">⏱ Time left: <span id="timer">60</span>s</div>
+    <input type="text" id="user-input" placeholder="Unscramble..." autocomplete="off" maxlength="8" />
+    <button id="submit-btn" onclick="checkAnswer()">Submit Guess</button>
+    <button class="hint-btn" id="hint-btn" onclick="showHint()">💡 Get Hint</button>
+    <div class="hint" id="hint"></div>
+    <div id="feedback"></div>
+    <div id="countdown-tomorrow"></div>
+    <button id="share-btn" onclick="copyShare()">📤 Share My Streak</button>
+    <div class="streak">
+      🔥 Streak: <span class="streak-number" id="streak">0</span>
+    </div>
+    
+    <div class="stats-container">
+      <div class="stat-box">
+        <div class="stat-number" id="total-solved">0</div>
+        <div class="stat-label">Solved</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-number" id="best-streak">0</div>
+        <div class="stat-label">Best Streak</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <script>
+    const wordList = [
+      {word: "scramble", hint: "To climb or move quickly over rough ground", difficulty: 3},
+      {word: "keyboard", hint: "What you type on to use a computer", difficulty: 2},
+      {word: "mountain", hint: "A very tall natural elevation of land", difficulty: 2},
+      {word: "treasure", hint: "Valuable items like gold and jewels", difficulty: 3},
+      {word: "elephant", hint: "Large gray animal with a long trunk", difficulty: 2},
+      {word: "sandwich", hint: "Food with filling between two slices of bread", difficulty: 2},
+      {word: "birthday", hint: "The day you were born, celebrated yearly", difficulty: 1},
+      {word: "rainbow", hint: "Colorful arc in the sky after rain", difficulty: 2},
+      {word: "champion", hint: "The winner of a competition", difficulty: 3},
+      {word: "butterfly", hint: "Colorful insect that starts as a caterpillar", difficulty: 2},
+      {word: "volcano", hint: "Mountain that can erupt with lava", difficulty: 3},
+      {word: "building", hint: "A structure with walls and a roof", difficulty: 2},
+      {word: "sunshine", hint: "Bright light from the sun", difficulty: 1},
+      {word: "painting", hint: "Art made with colors on canvas", difficulty: 2},
+      {word: "football", hint: "Popular sport played with an oval ball", difficulty: 2},
+      {word: "swimming", hint: "Moving through water for exercise or fun", difficulty: 2},
+      {word: "universe", hint: "All of space and everything in it", difficulty: 4},
+      {word: "symphony", hint: "A long piece of classical music", difficulty: 4},
+      {word: "dinosaur", hint: "Extinct giant reptile from long ago", difficulty: 3},
+      {word: "vacation", hint: "Time off from work or school for fun", difficulty: 2}
+    ];
+
+    const today = new Date().toISOString().split("T")[0];
+    const solvedKey = `solved-${today}`;
+    const seed = today.split("-").join("");
+    const index = parseInt(seed.slice(-2)) % wordList.length;
+    const todayWord = wordList[index];
+    const correctWord = todayWord.word;
+    const scrambled = correctWord.split('').sort(() => 0.5 - Math.random()).join('').toUpperCase();
+
+    document.getElementById("today-date").textContent = today;
+    document.getElementById("scrambled-word").textContent = scrambled;
+
+    // Set difficulty stars
+    const stars = "★".repeat(todayWord.difficulty) + "☆".repeat(5 - todayWord.difficulty);
+    document.getElementById("difficulty").textContent = stars;
+
+    let streak = parseInt(localStorage.getItem("streak")) || 0;
+    let bestStreak = parseInt(localStorage.getItem("bestStreak")) || 0;
+    let totalSolved = parseInt(localStorage.getItem("totalSolved")) || 0;
+    
+    document.getElementById("streak").textContent = streak;
+    document.getElementById("best-streak").textContent = bestStreak;
+    document.getElementById("total-solved").textContent = totalSolved;
+
+    const input = document.getElementById("user-input");
+    const submitBtn = document.getElementById("submit-btn");
+    const feedback = document.getElementById("feedback");
+    const timerEl = document.getElementById("timer");
+    const timerContainer = document.getElementById("timer-container");
+    const shareBtn = document.getElementById("share-btn");
+    const countdownText = document.getElementById("countdown-tomorrow");
+    const hintBtn = document.getElementById("hint-btn");
+    const hintEl = document.getElementById("hint");
+
+    let timeLeft = 60;
+    let locked = false;
+    let hintUsed = false;
+    let startTime = Date.now();
+
+    const solvedAlready = localStorage.getItem(solvedKey);
+
+    if (solvedAlready) {
+      lockGame(solvedAlready);
+    } else {
+      var countdown = setInterval(() => {
+        if (locked) return;
+        timeLeft--;
+        timerEl.textContent = timeLeft;
+        
+        // Add warning animation when time is low
+        if (timeLeft <= 10) {
+          timerContainer.classList.add('warning');
+        }
+        
+        if (timeLeft <= 0) {
+          clearInterval(countdown);
+          resetStreak();
+          lockGame("timeout", `⏰ Time's up! The word was: ${correctWord.toUpperCase()}`);
+        }
+      }, 1000);
+    }
+
+    // Allow Enter key to submit
+    input.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        checkAnswer();
+      }
+    });
+
+    function showFeedback(type, message) {
+      feedback.className = type;
+      feedback.textContent = message;
+      feedback.style.display = "block";
+    }
+
+    function showHint() {
+      if (hintUsed || locked) return;
+      hintUsed = true;
+      hintEl.textContent = `💡 ${todayWord.hint}`;
+      hintEl.style.display = "block";
+      hintBtn.textContent = "Hint Used";
+      hintBtn.disabled = true;
+    }
+
+    function checkAnswer() {
+      if (locked) return;
+      const guess = input.value.trim().toLowerCase();
+      if (guess === correctWord.toLowerCase()) {
+        clearInterval(countdown);
+        const solveTime = Math.round((Date.now() - startTime) / 1000);
+        streak++;
+        totalSolved++;
+        
+        if (streak > bestStreak) {
+          bestStreak = streak;
+          localStorage.setItem("bestStreak", bestStreak);
+          document.getElementById("best-streak").textContent = bestStreak;
+        }
+        
+        localStorage.setItem("streak", streak);
+        localStorage.setItem("totalSolved", totalSolved);
+        document.getElementById("streak").textContent = streak;
+        document.getElementById("total-solved").textContent = totalSolved;
+        localStorage.setItem(solvedKey, "success");
+        
+        const message = hintUsed ? 
+          `✅ Correct! Solved in ${solveTime}s (with hint). Come back tomorrow!` :
+          `✅ Perfect! Solved in ${solveTime}s without hints! Come back tomorrow!`;
+        
+        lockGame("success", message);
+        launchConfetti();
+      } else if (guess.length > 0) {
+        showFeedback("error", "❌ Not quite right. Try again!");
+        input.value = "";
+        input.focus();
+      }
+    }
+
+    function lockGame(status, message) {
+      locked = true;
+      input.disabled = true;
+      submitBtn.disabled = true;
+      hintBtn.disabled = true;
+      showFeedback(status, message || "✅ You've completed today's puzzle.");
+      shareBtn.style.display = "inline-block";
+      updateNextCountdown();
+    }
+
+    function resetStreak() {
+      streak = 0;
+      localStorage.setItem("streak", 0);
+      document.getElementById("streak").textContent = 0;
+    }
+
+    function updateNextCountdown() {
+      const now = new Date();
+      const tomorrow = new Date();
+      tomorrow.setHours(24, 0, 0, 0);
+      const msLeft = tomorrow - now;
+      const hours = Math.floor(msLeft / (1000 * 60 * 60));
+      const minutes = Math.floor((msLeft % (1000 * 60 * 60)) / (1000 * 60));
+      countdownText.textContent = `🕒 Next puzzle in ${hours}h ${minutes}m`;
+    }
+
+    function copyShare() {
+      const solveTime = 60 - timeLeft;
+      const hintText = hintUsed ? " (with hint)" : "";
+      const message = `🧠 ScrambleStreak – ${today}\n✅ Solved in ${solveTime}s${hintText}\n🔥 Streak: ${streak}\n📊 Total solved: ${totalSolved}\nhttps://scramblestreak.com`;
+      navigator.clipboard.writeText(message).then(() => {
+        shareBtn.textContent = "✅ Copied!";
+        setTimeout(() => { shareBtn.textContent = "📤 Share My Streak"; }, 2000);
+      });
+    }
+
+    function launchConfetti() {
+      // Multiple confetti bursts for better effect
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 }
+      });
+      
+      setTimeout(() => {
+        confetti({
+          particleCount: 50,
+          spread: 60,
+          origin: { y: 0.6 }
+        });
+      }, 250);
+    }
+
+    // Update countdown every minute
+    setInterval(updateNextCountdown, 60000);
+    updateNextCountdown();
+  </script>
+
 </body>
 </html>
