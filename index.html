@@ -22,17 +22,17 @@
     .game-container {
       background: rgba(255, 255, 255, 0.95);
       backdrop-filter: blur(10px);
-      padding: 30px 20px;
-      border-radius: 20px;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+      padding: 20px 16px;
+      border-radius: 16px;
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
       text-align: center;
-      max-width: 400px;
+      max-width: 360px;
       width: 90%;
       border: 1px solid rgba(255, 255, 255, 0.2);
     }
 
     .logo-container {
-      margin-bottom: 10px;
+      margin-bottom: 8px;
       display: flex;
       justify-content: center;
     }
@@ -47,21 +47,21 @@
     }
 
     .date {
-      font-size: 13px;
+      font-size: 12px;
       color: #6b7280;
-      margin-bottom: 16px;
+      margin-bottom: 12px;
     }
 
     .scrambled-word {
-      font-size: 32px;
+      font-size: 28px;
       font-weight: bold;
-      letter-spacing: 8px;
-      margin-bottom: 16px;
+      letter-spacing: 6px;
+      margin-bottom: 12px;
       color: #111827;
       word-wrap: break-word;
-      padding: 15px;
+      padding: 12px;
       background: linear-gradient(45deg, #fef3c7, #fde68a);
-      border-radius: 12px;
+      border-radius: 10px;
       border: 2px dashed #fbbf24;
       animation: pulse 2s ease-in-out infinite;
     }
@@ -72,12 +72,12 @@
     }
 
     .timer {
-      font-size: 16px;
+      font-size: 14px;
       color: #374151;
-      margin-bottom: 20px;
-      padding: 8px 16px;
+      margin-bottom: 15px;
+      padding: 6px 12px;
       background: #fef3c7;
-      border-radius: 20px;
+      border-radius: 16px;
       display: inline-block;
       font-weight: 600;
     }
@@ -95,12 +95,12 @@
     }
 
     input[type="text"] {
-      padding: 15px;
-      font-size: 18px;
+      padding: 12px;
+      font-size: 16px;
       width: 100%;
       border: 2px solid #fbbf24;
-      border-radius: 12px;
-      margin-bottom: 16px;
+      border-radius: 10px;
+      margin-bottom: 12px;
       transition: all 0.3s ease;
       text-align: center;
       font-weight: 600;
@@ -116,14 +116,14 @@
     }
 
     button {
-      padding: 16px 24px;
+      padding: 12px 20px;
       width: 100%;
       background: linear-gradient(45deg, #fbbf24, #f59e0b);
       border: none;
-      border-radius: 12px;
+      border-radius: 10px;
       color: #000;
       font-weight: bold;
-      font-size: 16px;
+      font-size: 15px;
       cursor: pointer;
       transition: all 0.3s ease;
       text-transform: uppercase;
@@ -161,10 +161,10 @@
     }
 
     #feedback {
-      margin-top: 16px;
-      padding: 12px;
-      border-radius: 12px;
-      font-size: 16px;
+      margin-top: 12px;
+      padding: 10px;
+      border-radius: 10px;
+      font-size: 14px;
       display: none;
       font-weight: 600;
     }
@@ -188,19 +188,19 @@
     }
 
     #countdown-tomorrow {
-      margin-top: 14px;
-      font-size: 14px;
+      margin-top: 10px;
+      font-size: 12px;
       color: #374151;
     }
 
     #share-btn {
       display: none;
-      margin-top: 16px;
-      padding: 12px 20px;
+      margin-top: 12px;
+      padding: 10px 16px;
       background: linear-gradient(45deg, #3b82f6, #2563eb);
       color: white;
       border: none;
-      border-radius: 12px;
+      border-radius: 10px;
       font-weight: bold;
       cursor: pointer;
       transition: all 0.3s ease;
@@ -241,8 +241,8 @@
     }
 
     .difficulty-indicator {
-      margin-bottom: 10px;
-      font-size: 12px;
+      margin-bottom: 8px;
+      font-size: 11px;
       color: #6b7280;
     }
 
@@ -258,29 +258,44 @@
     }
 
     .stats-container {
-      margin-top: 20px;
+      margin-top: 15px;
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      font-size: 12px;
+      gap: 8px;
+      font-size: 11px;
     }
 
     .stat-box {
       background: #f8fafc;
-      padding: 8px;
-      border-radius: 8px;
+      padding: 6px;
+      border-radius: 6px;
       border: 1px solid #e2e8f0;
     }
 
     .stat-number {
-      font-size: 16px;
+      font-size: 14px;
       font-weight: bold;
       color: #1e293b;
     }
 
     .stat-label {
       color: #64748b;
-      margin-top: 2px;
+      margin-top: 1px;
+    }
+
+    /* AdSense Banner Space */
+    .adsense-container {
+      margin-top: 15px;
+      padding: 10px 0;
+      text-align: center;
+      min-height: 60px;
+      background: rgba(0, 0, 0, 0.02);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      color: #9ca3af;
     }
   </style>
 </head>
@@ -288,27 +303,27 @@
 
   <div class="game-container">
     <div class="logo-container">
-      <svg width="260" height="80" viewBox="0 0 260 80" xmlns="http://www.w3.org/2000/svg">
+      <svg width="220" height="65" viewBox="0 0 220 65" xmlns="http://www.w3.org/2000/svg">
         <!-- Yellow rounded square container -->
-        <rect x="10" y="15" width="50" height="50" rx="10" ry="10" fill="#fbbf24"/>
+        <rect x="8" y="12" width="42" height="42" rx="8" ry="8" fill="#fbbf24"/>
         
         <!-- Scrambled letters inside yellow box - "SCRAMBLE" scrambled -->
-        <text x="19" y="32" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#1e40af">S</text>
-        <text x="32" y="32" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#1e40af">C</text>
-        <text x="45" y="32" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#1e40af">R</text>
+        <text x="16" y="27" font-family="Arial, sans-serif" font-size="8" font-weight="bold" fill="#1e40af">S</text>
+        <text x="27" y="27" font-family="Arial, sans-serif" font-size="8" font-weight="bold" fill="#1e40af">C</text>
+        <text x="38" y="27" font-family="Arial, sans-serif" font-size="8" font-weight="bold" fill="#1e40af">R</text>
         
-        <text x="19" y="45" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#1e40af">A</text>
-        <text x="32" y="45" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#1e40af">M</text>
-        <text x="45" y="45" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#1e40af">B</text>
+        <text x="16" y="38" font-family="Arial, sans-serif" font-size="8" font-weight="bold" fill="#1e40af">A</text>
+        <text x="27" y="38" font-family="Arial, sans-serif" font-size="8" font-weight="bold" fill="#1e40af">M</text>
+        <text x="38" y="38" font-family="Arial, sans-serif" font-size="8" font-weight="bold" fill="#1e40af">B</text>
         
-        <text x="25" y="58" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#1e40af">L</text>
-        <text x="38" y="58" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#1e40af">E</text>
+        <text x="21" y="49" font-family="Arial, sans-serif" font-size="8" font-weight="bold" fill="#1e40af">L</text>
+        <text x="32" y="49" font-family="Arial, sans-serif" font-size="8" font-weight="bold" fill="#1e40af">E</text>
         
         <!-- "Scramble" text -->
-        <text x="75" y="42" font-family="Arial, sans-serif" font-size="22" font-weight="bold" fill="#1e40af">Scramble</text>
+        <text x="60" y="36" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#1e40af">Scramble</text>
         
         <!-- "Streak" text -->
-        <text x="75" y="62" font-family="Arial, sans-serif" font-size="22" font-weight="bold" fill="#1e40af">Streak</text>
+        <text x="60" y="52" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#1e40af">Streak</text>
       </svg>
     </div>
     <div class="date">🧠 Daily Puzzle – <span id="today-date"></span></div>
@@ -337,6 +352,11 @@
         <div class="stat-number" id="best-streak">0</div>
         <div class="stat-label">Best Streak</div>
       </div>
+    </div>
+    
+    <!-- AdSense Banner Placeholder -->
+    <div class="adsense-container">
+      AdSense Banner (320x50)
     </div>
   </div>
 
