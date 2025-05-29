@@ -317,7 +317,7 @@
     </div>
     <div class="scrambled-word" id="scrambled-word">LOADING</div>
     <div class="timer" id="timer-container">⏱ Time left: <span id="timer">60</span>s</div>
-    <input type="text" id="user-input" placeholder="Unscramble..." autocomplete="off" maxlength="8" />
+    <input type="text" id="user-input" placeholder="Unscramble..." autocomplete="off"       maxlength="8" />
     <button id="submit-btn" onclick="checkAnswer()">Submit Guess</button>
     <button class="hint-btn" id="hint-btn" onclick="showHint()">💡 Get Hint</button>
     <div class="hint" id="hint"></div>
@@ -352,10 +352,7 @@
       {word: "elephant", hint: "Large gray animal with a long trunk", difficulty: 2},
       {word: "sandwich", hint: "Food with filling between two slices of bread", difficulty: 2},
       {word: "birthday", hint: "The day you were born, celebrated yearly", difficulty: 1},
-      {word: "rainbow", hint: "Colorful arc in the sky after rain", difficulty: 2},
       {word: "champion", hint: "The winner of a competition", difficulty: 3},
-      {word: "butterfly", hint: "Colorful insect that starts as a caterpillar", difficulty: 2},
-      {word: "volcano", hint: "Mountain that can erupt with lava", difficulty: 3},
       {word: "building", hint: "A structure with walls and a roof", difficulty: 2},
       {word: "sunshine", hint: "Bright light from the sun", difficulty: 1},
       {word: "painting", hint: "Art made with colors on canvas", difficulty: 2},
@@ -364,7 +361,15 @@
       {word: "universe", hint: "All of space and everything in it", difficulty: 4},
       {word: "symphony", hint: "A long piece of classical music", difficulty: 4},
       {word: "dinosaur", hint: "Extinct giant reptile from long ago", difficulty: 3},
-      {word: "vacation", hint: "Time off from work or school for fun", difficulty: 2}
+      {word: "vacation", hint: "Time off from work or school for fun", difficulty: 2},
+      {word: "computer", hint: "Electronic device for processing information", difficulty: 2},
+      {word: "together", hint: "With each other, as a group", difficulty: 2},
+      {word: "problems", hint: "Difficult situations that need solutions", difficulty: 3},
+      {word: "pictures", hint: "Visual images or photographs", difficulty: 2},
+      {word: "business", hint: "Commercial activity or company", difficulty: 3},
+      {word: "children", hint: "Young people, sons and daughters", difficulty: 2},
+      {word: "interest", hint: "Curiosity or concern about something", difficulty: 3},
+      {word: "complete", hint: "Finished, having all necessary parts", difficulty: 3}
     ];
 
     const today = new Date().toISOString().split("T")[0];
